@@ -9,15 +9,14 @@
 
 title: "ELEC4630 AI Learning Journey"
 description: "Documenting my exploration of Computer Vision and Deep Learning at UQ"
+
+author: Isaac Johan Ziebarth
+
+# Social and contact links
 github_username: Zyzzbarth333
+linkedin_username: isaacjohanziebarth
 email: IJZiebarth@outlook.com.au
 studentemail: i.ziebarth@student.uq.edu.au
-linkedin_username: isaacjohanziebarth
-
-# Author information - displayed in posts
-author:
-  name: Isaac Johan Ziebarth
-  email: IJZiebarth@outlook.com.au
 
 # Set this to true to get LaTeX math equation support
 use_math: true
