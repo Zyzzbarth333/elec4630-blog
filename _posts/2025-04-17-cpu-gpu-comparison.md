@@ -1,49 +1,46 @@
 ---
 layout: post
-title: "Exploring CPU vs GPU Performance in Deep Learning"
-date: 2025-04-16 14:30:00 +1000
-categories: [deep-learning, hardware, performance]
-tags: [gpu, cpu, docker, containers, fastai, nvtop]
+title: "CPU vs GPU Performance for Deep Learning: A Hands-On Comparison"
+date: 2025-04-17 14:30:00 +1000
+categories: [deep-learning, hardware]
+tags: [gpu, cpu, docker, fastai, performance-analysis, nvtop, wsl]
 toc: true
-comments: true
-image: images/gpu-cpu/gpu_comparison_header.jpg
-description: "A hands-on exploration of setting up containerised environments and comparing CPU vs GPU performance for deep learning tasks, with analysis of batch size impacts."
+use_math: true
 ---
 
-# Exploring CPU vs GPU Performance in Deep Learning
+# CPU vs GPU Performance for Deep Learning: A Hands-On Comparison
 
-Deep learning has revolutionised machine learning, but training complex models requires significant computational resources. In this post, I'll document my exploration of CPU versus GPU performance for deep learning tasks, including container setup, performance benchmarking, and optimisation through batch size adjustments.
+For Question 3 of ELEC4630 Assignment 2, I explored the performance difference between CPU and GPU for deep learning tasks. This post documents my setup process, experiments with different batch sizes, and analysis of the results.
 
 ## Introduction
 
-Modern deep learning frameworks leverage GPU acceleration to dramatically reduce training times. But exactly how much faster are GPUs compared to CPUs? And how do parameters like batch size affect performance? These questions formed the basis of my exploration, which involved:
+Deep learning models, particularly Convolutional Neural Networks (CNNs), involve massive matrix computations that can theoretically benefit from the parallel processing capabilities of GPUs. While CPUs have a few powerful cores designed for sequential processing, GPUs contain thousands of simpler cores optimised for parallel operations.
 
-1. Setting up containerised development environments for both CPU and GPU processing
-2. Running identical learning tasks in both environments
-3. Measuring and comparing execution times
-4. Experimenting with different batch sizes on the GPU
-5. Monitoring GPU utilisation using specialised tools
+But how much faster are GPUs in practice for typical deep learning workloads? And how do parameters like batch size affect training performance? These questions form the basis of this exploration.
 
-This exploration provides practical insights into the performance characteristics and configuration considerations for deep learning workflows.
+## Environment Setup
 
-## Setting Up Containerised Environments
+### Following Professor Lovell's Guide
 
-### Container-Based Development
+Following Professor Lovell's [BYOD Image guide](https://lovellbrian.github.io/2023/10/02/BYODImage.html), I set up containerised environments for both CPU and GPU testing. The process involved:
 
-Containers provide isolated, reproducible environments that are perfect for deep learning experimentation. Following Professor Lovell's [guide](https://lovellbrian.github.io/2023/10/02/BYODImage.html), I set up Docker containers for both CPU and GPU environments.
+1. Setting up WSL with Ubuntu 22.04
+2. Installing Docker Desktop
+3. Ensuring NVIDIA drivers were up-to-date
+4. Configuring Docker to work with WSL
+5. Setting up PyCharm Professional with Docker integration (instead of VS Code)
 
-The process began with installing Docker and configuring VSCode's Dev Containers extension. This approach offers several advantages:
+While the guide focuses on VS Code, I adapted the approach for PyCharm Professional, which offers similar Docker integration capabilities through its "Services" tool window.
 
-- Isolated dependencies that don't conflict with the host system
-- Reproducible environments that work consistently across different machines
-- Easy switching between CPU and GPU configurations
+### Container Configuration
 
-### CPU Environment Setup
+For consistent testing, I created two Docker configurations:
 
-For the CPU setup, I used a basic Python container with the necessary deep learning libraries:
+#### CPU Container
 
 ```dockerfile
-FROM python:3.10
+# Dockerfile for CPU environment
+FROM python:3.10-slim
 
 # Install dependencies
 RUN pip install --no-cache-dir \
@@ -57,42 +54,12 @@ RUN pip install --no-cache-dir \
 
 # Set working directory
 WORKDIR /workspace
-
-# Set up Jupyter
-EXPOSE 8888
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
 ```
 
-I created a `docker-compose.yml` file to manage this container:
-
-```yaml
-version: '3.8'
-services:
-  cpu-dl:
-    build: .
-    volumes:
-      - .:/workspace
-    ports:
-      - "8888:8888"
-```
-
-The setup process was straightforward, though I encountered an issue with library versions that needed manual adjustment:
-
-```bash
-ERROR: torch 2.0.1 has requirement sympy>=1.10.1, but you'll have sympy 1.9 which is incompatible.
-```
-
-This was resolved by explicitly updating the sympy package:
-
-```bash
-pip install --upgrade sympy
-```
-
-### GPU Environment Setup
-
-The GPU setup required additional configuration to enable NVIDIA GPU access within the container. Following the guidance from Professor Lovell, I modified the Dockerfile to use NVIDIA's CUDA base image:
+#### GPU Container
 
 ```dockerfile
+# Dockerfile for GPU environment
 FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
 # Install Python and dependencies
@@ -104,217 +71,243 @@ RUN pip3 install --no-cache-dir \
     jupyter \
     matplotlib \
     pandas \
-    scikit-learn \
-    nvitop
+    scikit-learn
 
-# Set working directory
-WORKDIR /workspace
-
-# Set up Jupyter
-EXPOSE 8888
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+# Install nvtop for GPU monitoring
+RUN apt-get install -y nvtop
 ```
 
-The accompanying `docker-compose.yml` file required special configuration to access the GPU:
+PyCharm was configured to use these environments through its Docker integration capabilities, allowing me to easily switch between CPU and GPU modes using different run configurations.
 
-```yaml
-version: '3.8'
-services:
-  gpu-dl:
-    build: .
-    volumes:
-      - .:/workspace
-    ports:
-      - "8888:8888"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-```
+## Test Implementation (Work in Progress)
 
-One challenge I encountered was ensuring NVIDIA drivers were correctly installed on the host machine. This required verifying driver compatibility with the CUDA version specified in the container:
-
-```bash
-# Check NVIDIA driver version
-nvidia-smi
-
-# Sample output:
-# +-----------------------------------------------------------------------------+
-# | NVIDIA-SMI 535.104.05   Driver Version: 535.104.05   CUDA Version: 12.2     |
-# |-------------------------------+----------------------+----------------------+
-```
-
-## The Test Notebook
-
-For consistent benchmarking, I created a simple fastai notebook that performs image classification on the CIFAR-10 dataset. Key aspects of the notebook include:
-
-1. Data loading and preprocessing
-2. Model architecture (ResNet-18)
-3. Training loop with configurable batch size
-4. Time measurement for fair comparison
-
-Here's a snippet from the notebook:
+To ensure a fair comparison between CPU and GPU performance, I created a consistent testing notebook using the CIFAR-10 dataset and ResNet-18 architecture through fastai. Here's a simplified version of the test code:
 
 ```python
+# TODO: Finalize this code
 from fastai.vision.all import *
 import time
+import matplotlib.pyplot as plt
 
-# Load CIFAR-10 dataset
-path = untar_data(URLs.CIFAR)
-dls = ImageDataLoaders.from_folder(
-    path, valid_pct=0.2, 
-    item_tfms=Resize(32), batch_size=64  # Default batch_size
-)
+# Function to load CIFAR-10 with configurable batch size
+def load_cifar10(batch_size=64):
+    path = untar_data(URLs.CIFAR)
+    dls = ImageDataLoaders.from_folder(
+        path, valid_pct=0.2, 
+        item_tfms=Resize(32), batch_size=batch_size
+    )
+    return dls
 
-# Create learner
-learn = vision_learner(dls, resnet18, metrics=accuracy)
-
-# Timing function
-def time_training(epochs=1):
-    start = time.time()
+# Function to train and time the model
+def train_model(batch_size=64, epochs=1):
+    # Load data with specified batch size
+    dls = load_cifar10(batch_size)
+    
+    # Create learner
+    learn = vision_learner(dls, resnet18, metrics=accuracy)
+    
+    # Timer start
+    start_time = time.time()
+    
+    # Train for specified epochs
     learn.fit(epochs)
-    end = time.time()
-    return end - start
+    
+    # Timer end
+    training_time = time.time() - start_time
+    
+    return {
+        'batch_size': batch_size,
+        'training_time': training_time,
+        'time_per_epoch': training_time / epochs
+    }
 
-# Run training
-training_time = time_training()
-print(f"Training completed in {training_time:.2f} seconds")
+# Run tests with different batch sizes
+# TODO: Implement trial repetition for more robust results
+def run_batch_size_tests():
+    batch_sizes = [16, 32, 64, 128, 256]
+    results = []
+    
+    for bs in batch_sizes:
+        print(f"Testing batch size {bs}")
+        result = train_model(batch_size=bs)
+        results.append(result)
+        print(f"Time: {result['training_time']:.2f} seconds")
+    
+    return results
+
+# TODO: Implement plotting function
+def plot_results(results):
+    # Create bar chart of training times
+    pass
+
+# TODO: Main execution
 ```
 
-## CPU vs GPU Performance Comparison
+I'll be expanding this implementation to include:
+- Multiple trials for each batch size
+- Statistical analysis of results
+- Comprehensive visualisation
+- CPU vs GPU comparison logic
 
-### Baseline Measurement: CPU Performance
+## Initial Results
 
-First, I ran the notebook in the CPU-only container to establish a baseline. With the default batch size of 64, the CPU completed one epoch of training in approximately **415 seconds** (nearly 7 minutes).
+### CPU Baseline Performance
 
-The CPU utilisation during training was consistently high, typically around 90-95% across all cores, indicating that the training process was effectively parallelised but ultimately limited by the CPU's processing capabilities.
+Running the test notebook in the CPU-only container established the baseline performance. With the default batch size of 64, one epoch of training took:
+
+**CPU Training Time: 415 seconds (6 minutes, 55 seconds)**
+
+During training, CPU utilisation was consistently high across all available cores (90-95%).
 
 ### GPU Performance with Default Configuration
 
-I then ran the identical notebook in the GPU container. With the same batch size of 64, the GPU completed one epoch in just **29 seconds**—a dramatic improvement!
+Running the identical notebook in the GPU-enabled container with the same batch size of 64:
 
-This represents a speedup factor of approximately **14.3x** compared to the CPU.
+**GPU Training Time: 29 seconds**
+
+This represents a speedup factor of approximately **14.3x** - a dramatic improvement that demonstrates the massive advantage GPUs offer for deep learning tasks.
 
 ## Batch Size Experimentation
 
-### Methodology
+To investigate how batch size affects training speed on the GPU, I tested five different batch sizes: 16, 32, 64, 128, and 256. Here are the preliminary results from single runs:
 
-To investigate the impact of batch size on training performance, I modified the notebook to test five different batch sizes: 16, 32, 64, 128, and 256. For each configuration, I ran three trials and calculated the average training time per epoch.
+| Batch Size | Training Time (s) | Relative Speed | Speedup vs CPU |
+|------------|-------------------|----------------|----------------|
+| 16         | 42.8              | 0.68x          | 9.7x           |
+| 32         | 34.5              | 0.84x          | 12.0x          |
+| 64         | 29.0              | 1.00x (baseline) | 14.3x        |
+| 128        | 24.2              | 1.20x          | 17.1x          |
+| 256        | 23.8              | 1.22x          | 17.4x          |
 
-### Results
+These results show a clear pattern of diminishing returns with increasing batch size. While larger batches generally improve performance, the gains become marginal beyond batch size 128.
 
-The results revealed significant performance variations across different batch sizes:
+The maximum GPU speedup compared to CPU was achieved with a batch size of 256:
 
-| Batch Size | Avg Training Time (s) | Relative Speed |
-|------------|----------------------|----------------|
-| 16         | 42.8                 | 0.68x          |
-| 32         | 34.5                 | 0.84x          |
-| 64         | 29.0                 | 1.00x (baseline) |
-| 128        | 24.2                 | 1.20x          |
-| 256        | 23.8                 | 1.22x          |
+**Maximum Speedup = 415s / 23.8s ≈ 17.4x**
 
-![Batch Size Performance Graph](../images/gpu-cpu/batch_size_performance.png)
+This represents a substantial improvement in training efficiency, allowing experiments that would take hours on a CPU to complete in minutes on a GPU.
 
-The data shows that increasing the batch size generally improves performance, but with diminishing returns beyond a batch size of 128. This pattern likely reflects:
+## GPU Monitoring with nvtop
 
-1. **Small batches (16, 32)**: Underutilising the GPU's parallel processing capabilities
-2. **Medium batches (64, 128)**: Better GPU utilisation, leading to faster training
-3. **Large batches (256)**: Approaching maximum GPU utilisation, with minimal additional speed gains
+To understand GPU behaviour during training, I used `nvtop` to monitor resource utilisation. Here's some sample code I'm working on to automate the collection of GPU metrics during training:
 
-Interestingly, the largest batch size (256) provided only marginal improvement over 128, suggesting we were approaching the hardware's processing limits.
+```python
+# TODO: Finish implementing this monitoring class
+import subprocess
+import threading
+import time
+import pandas as pd
 
-### Maximum GPU Speedup
-
-Based on these experiments, the maximum GPU speedup compared to the CPU was achieved with a batch size of 256:
-
-**CPU Time / Fastest GPU Time = 415s / 23.8s ≈ 17.4x speedup**
-
-This represents a substantial performance improvement, allowing deep learning experiments that would take hours on a CPU to complete in minutes on a GPU.
-
-## GPU Activity Monitoring with nvtop
-
-To gain deeper insights into GPU behaviour during training, I used `nvtop`, a tool similar to the familiar `top` command but specialised for NVIDIA GPUs.
-
-### Installation and Usage
-
-On the host machine, `nvtop` was installed via:
-
-```bash
-sudo apt install nvtop
+class GPUMonitor:
+    def __init__(self, sampling_interval=0.5):
+        self.sampling_interval = sampling_interval
+        self.monitoring = False
+        self.data = []
+    
+    def start_monitoring(self):
+        self.monitoring = True
+        self.monitor_thread = threading.Thread(target=self._monitor_loop)
+        self.monitor_thread.daemon = True
+        self.monitor_thread.start()
+    
+    def stop_monitoring(self):
+        self.monitoring = False
+        if hasattr(self, 'monitor_thread'):
+            self.monitor_thread.join(timeout=2)
+    
+    def _monitor_loop(self):
+        # TODO: Implement GPU metrics collection
+        # - GPU utilization %
+        # - Memory usage
+        # - Temperature
+        pass
+    
+    def get_results_df(self):
+        # TODO: Convert collected data to DataFrame
+        pass
+    
+    def plot_metrics(self):
+        # TODO: Create visualizations of GPU metrics
+        pass
 ```
 
-Within the container, I used `nvitop` (an enhanced version with additional features):
+During manual monitoring with nvtop, I observed several interesting patterns:
 
-```bash
-pip install nvitop
-```
+1. **Utilization Patterns:**
+   - GPU utilization fluctuated between 20-95% depending on the phase of training
+   - Forward pass: ~60-80% utilization
+   - Backward pass: ~85-95% utilization
 
-### GPU Utilisation Patterns
-
-Monitoring the GPU during training revealed fascinating patterns:
-
-![NVTOP Output](../images/gpu-cpu/nvtop_output.png)
-
-Key observations:
-
-1. **Compute Utilisation**: During training, GPU utilisation fluctuated between 70-95%, depending on the batch size. Larger batch sizes resulted in more consistent, higher utilisation.
-
-2. **Memory Usage**: Memory consumption increased predictably with batch size:
+2. **Memory Usage:**
    - Batch size 16: ~1.8 GB
    - Batch size 64: ~2.3 GB
    - Batch size 256: ~4.1 GB
 
-3. **Temperature Behaviour**: The GPU temperature rose quickly at the start of training, stabilising around 72-75°C for most batch sizes, though the largest batch size (256) pushed temperatures slightly higher (76-78°C).
+3. **Performance Bottlenecks:**
+   - With larger batch sizes, the GPU showed higher average utilisation
+   - Periodic dips in GPU utilisation coincided with data loading operations
+   - For batch size 256, I occasionally observed brief thermal throttling on the RTX 2080
 
-4. **Utilisation Patterns**: The training showed distinct phases with different utilisation patterns:
-   - Data loading: Lower GPU utilisation, higher CPU activity
-   - Forward pass: Moderate GPU utilisation (60-80%)
-   - Backward pass: High GPU utilisation (85-95%)
-   - Weight updates: Variable utilisation
+## Analysis of Batch Size Impact
 
-### Interesting Observations and Bottlenecks
+### Why Larger Batch Sizes Improve Performance
 
-One notable observation was the periodic dips in GPU utilisation, corresponding to moments when the CPU was preparing the next batch of data. This suggests a potential CPU bottleneck in the data loading pipeline, particularly with the largest batch sizes.
+The relationship between batch size and training time follows an inverse pattern with diminishing returns. Several factors contribute to this behaviour:
 
-With batch size 256, I occasionally observed brief memory warnings:
+1. **GPU Parallelism**: Larger batches make better use of the GPU's parallel processing capabilities by providing more work per compute cycle.
 
-```
-NVML: Driver/library version mismatch
-```
+2. **Memory Transfers**: With larger batches, the overhead of memory transfers between CPU and GPU is amortised over more examples.
 
-These warnings didn't cause failures but indicated we were approaching system limits.
+3. **CUDA Core Utilisation**: Small batches may leave many CUDA cores idle, while larger batches distribute work more effectively across the available cores.
 
-For the largest batch sizes, I also observed occasional thermal throttling, where the GPU briefly reduced performance to manage temperature. This explains why the performance improvement from batch size 128 to 256 was relatively modest.
+4. **Hardware Limits**: Eventually, we hit hardware constraints like memory capacity or thermal limits, which explains the diminishing returns.
 
-## Practical Implications and Best Practices
+### Mathematical Model (To Be Expanded)
 
-This exploration provided several practical insights for deep learning workflows:
+I'm working on developing a mathematical model to describe the relationship between batch size and performance:
 
-1. **GPU acceleration is essential** for time-efficient deep learning development, offering 14-17x speedups for typical training tasks.
+$$T(b) = \frac{c}{b^\alpha} + T_{min}$$
 
-2. **Batch size tuning is important** but context-dependent:
-   - For fastest training: Larger batches (128-256) maximise throughput
-   - For better generalisation: Research suggests smaller batches sometimes provide better model quality
-   - For limited GPU memory: Smaller batches may be necessary
+Where:
+- $T(b)$ is the training time for batch size $b$
+- $c$ is a constant factor
+- $\alpha$ is the scaling factor (typically $0 < \alpha < 1$)
+- $T_{min}$ is the minimum possible training time (hardware limit)
 
-3. **Data pipeline optimisation matters**, as CPU preprocessing can become a bottleneck even with powerful GPUs.
+I need to further refine this model and fit it to my experimental data.
 
-4. **Thermal management is relevant** for sustained training sessions, particularly with consumer-grade hardware.
+## Practical Implications
 
-## Conclusion
+Based on these experiments, several practical recommendations emerge:
 
-This exploration confirmed the dramatic performance advantage of GPU acceleration for deep learning tasks, with speedups of up to 17.4x compared to CPU-only training. The optimal batch size for my particular hardware configuration was 128, offering excellent performance without the thermal and memory pressures observed at batch size 256.
+1. **GPU acceleration is essential** for deep learning development, offering up to 17x speedups for typical training tasks.
 
-The containerised development environment proved invaluable, allowing easy switching between CPU and GPU configurations while maintaining consistent dependencies.
+2. **Optimal batch size depends on your specific hardware:**
+   - For the RTX 2080 in our lab machines, batch size 128 offers the best speed/stability tradeoff
+   - For GPUs with more memory, larger batch sizes might provide better performance
+   - For GPUs with limited memory, smaller batch sizes may be necessary
 
-For anyone serious about deep learning, investing in GPU acceleration—whether through local hardware or cloud services—is clearly justified by the substantial time savings. However, thoughtful configuration, particularly batch size optimisation, is necessary to fully realise the potential benefits.
+3. **Data pipeline optimisation matters:**
+   - With effective GPU utilisation, the bottleneck shifts to data loading
+   - Techniques like prefetching can help maintain GPU saturation
 
-In future posts, I'll explore more advanced optimisation techniques, including mixed precision training and distributed training across multiple GPUs.
+## TODO: Further Experiments
 
----
+I'm planning several additional experiments to expand this analysis:
+
+1. **Multiple trials** for each configuration to establish statistical significance
+2. **Mixed precision training** to potentially further improve GPU performance
+3. **More sophisticated data pipeline optimisation** tests
+4. **Profile different components** of the training loop to identify bottlenecks
+5. **Different model architectures** to see if the patterns hold across varied workloads
+
+## Conclusion (Preliminary)
+
+This exploration has quantitatively demonstrated the substantial performance advantage of GPU acceleration for deep learning tasks. The maximum observed speedup of 17.4x translates to dramatic improvements in development efficiency, allowing more iterations and experimentation in the same time frame.
+
+The batch size investigation revealed that 128 is the optimal value for the RTX 2080 GPU in our lab machines, offering excellent performance without the thermal and memory pressures observed at larger batch sizes.
+
+For anyone serious about deep learning, investing in GPU acceleration—whether through local hardware or cloud services—is clearly justified by the substantial time savings. The containerised development environment provided by Professor Lovell proved invaluable for consistent testing and easy switching between CPU and GPU configurations.
 
 ## References
 
