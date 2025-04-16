@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Building a Web-Based Fingerprint Recognition System"
-date: 2025-04-15 18:00:00 +1000
+date: 2025-04-05 18:00:00 +1000
 categories: [biometrics, computer-vision, python]
 tags: [fingerprints, flask, opencv, recognition, gui]
 toc: true
