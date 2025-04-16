@@ -9,10 +9,9 @@
 title: ELEC4630 AI Learning Journey
 description: Documenting my exploration of Computer Vision and Deep Learning at UQ
 github_username: Zyzzbarth333
-
-# Email and twitter are optional:
-email: i.ziebarth@student.uq.edu.au
-twitter_username:
+email: IJZiebarth@outlook.com.au
+studentemail: i.ziebarth@student.uq.edu.au
+linkedin_username: isaacjohanziebarth
 
 # Set this to true to get LaTeX math equation support
 use_math: true
@@ -28,10 +27,20 @@ plugins:
   - jekyll-octicons
   - jekyll-github-metadata
 
+# Author information
+author:
+  name: Isaac Johan Ziebarth
+  email: IJZiebarth@outlook.com.au
+
 titles_from_headings:
   enabled:     true
   strip_title: true
   collections: true
+
+# URL settings
+# If I change to a custom domain, set it here
+# baseurl: ""
+# url: "https://yourdomain.com"
 
 highlighter: rouge
 markdown: kramdown
@@ -41,3 +50,16 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+
+# Default layout for posts
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Isaac Johan Ziebarth"
+
+# To enable excerpts on the home page
+show_excerpts: true
