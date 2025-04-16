@@ -1,5 +1,3 @@
-# ELEC4630 Deep Learning & Computer Vision Journey
-
 Welcome to my technical blog documenting my learning journey through ELEC4630 at the University of Queensland. This blog serves as a personal learning record and a resource for others exploring computer vision and deep learning.
 
 ![Image of fast.ai logo](images/logo.png)
