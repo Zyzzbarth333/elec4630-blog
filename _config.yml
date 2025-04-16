@@ -1,3 +1,4 @@
+
 # Welcome to Jekyll!
 #
 # This config file is meant for settings that affect your whole blog.
@@ -6,12 +7,17 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: ELEC4630 AI Learning Journey
-description: Documenting my exploration of Computer Vision and Deep Learning at UQ
+title: "ELEC4630 AI Learning Journey"
+description: "Documenting my exploration of Computer Vision and Deep Learning at UQ"
 github_username: Zyzzbarth333
 email: IJZiebarth@outlook.com.au
 studentemail: i.ziebarth@student.uq.edu.au
 linkedin_username: isaacjohanziebarth
+
+# Author information - displayed in posts
+author:
+  name: Isaac Johan Ziebarth
+  email: IJZiebarth@outlook.com.au
 
 # Set this to true to get LaTeX math equation support
 use_math: true
@@ -19,7 +25,7 @@ use_math: true
 # Add your Google Analytics ID here if you have one and want to use it
 google_analytics:
 
-# Everything below here can be ignored, unless you want to change the theme entirely
+# Theme settings
 theme: minima
 plugins:
   - jekyll-feed
@@ -27,22 +33,22 @@ plugins:
   - jekyll-octicons
   - jekyll-github-metadata
 
-# Author information
-author:
-  name: Isaac Johan Ziebarth
-  email: IJZiebarth@outlook.com.au
+# Header pages - controls which pages appear in the navigation
+header_pages:
+  - about.md
 
+# Titles from headings settings
 titles_from_headings:
   enabled:     true
   strip_title: true
   collections: true
 
 # URL settings
-# If I change to a custom domain, set it here
+# If you change to a custom domain, set it here
 # baseurl: ""
 # url: "https://yourdomain.com"
 
-highlighter: rouge
+# Build settings
 markdown: kramdown
 kramdown:
   math_engine: katex
@@ -50,6 +56,8 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+
+highlighter: rouge
 
 # Default layout for posts
 defaults:
@@ -59,7 +67,9 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      author: "Isaac Johan Ziebarth"
+      author: Isaac Johan Ziebarth
 
+# To enable excerpts on the home page
+show_excerpts: true
 # To enable excerpts on the home page
 show_excerpts: true
