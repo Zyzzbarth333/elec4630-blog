@@ -1,6 +1,6 @@
 # About Me
 
-![Isaac Ziebarth](/images/profile_photo.jpg){: width="300px" .align-right style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;"}
+![Isaac Ziebarth](/images/profile.jpg){: width="300px" .align-right style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;"}
 
 ## Professional Profile
 
