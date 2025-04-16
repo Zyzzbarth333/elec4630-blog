@@ -4,7 +4,7 @@ Welcome to my technical blog documenting my learning journey through ELEC4630 at
 
 ## About Me
 
-I'm a third-year Mechatronic Engineering student with technical knowledge in Aerospace Engineering and a passion for space technology. Through this course, I'm developing skills in image processing, biometric systems, and neural network architectures.
+I'm a Mechatronic Engineering student pursuing a combined Bachelor of Engineering (Honours) and Master of Engineering at The University of Queensland, and I am passionate about computer vision and robotics. Through this course, I'm developing skills in image processing, biometric systems, and neural network architectures.
 
 ## Blog Focus Areas
 
