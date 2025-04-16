@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Multi-Class Image Classification with t-SNE Visualisation"
-date: 2025-04-18 16:30:00 +1000
+date: 2025-04-16 18:00:00 +1000
 categories: [deep-learning, computer-vision]
 tags: [fastai, t-sne, classification, web-scraping, confusion-matrix]
 toc: true
