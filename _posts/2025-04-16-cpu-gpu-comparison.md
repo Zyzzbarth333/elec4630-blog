@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "CPU vs GPU Performance for Deep Learning: A Hands-On Comparison"
-date: 2025-04-17 14:30:00 +1000
+date: 2025-04-16 18:00:00 +1000
 categories: [deep-learning, hardware]
 tags: [gpu, cpu, docker, fastai, performance-analysis, nvtop, wsl]
 toc: true
