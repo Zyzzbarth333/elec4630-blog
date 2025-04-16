@@ -14,7 +14,7 @@ I'm a Mechatronic Engineering student pursuing a combined Bachelor of Engineerin
 
 This blog documents my exploration of several key areas:
 
-1. **Fingerprint Recognition Systems** - Implementation challenges and performance optimization
+1. **Fingerprint Recognition Systems** - Implementation challenges and performance optimisation
 2. **GPU vs CPU Performance** - Practical experiments on training acceleration
 3. **Image Classification** - Building and training custom classifiers using fastai
 4. **Development Environment Setup** - Configuration tips for deep learning workflows
