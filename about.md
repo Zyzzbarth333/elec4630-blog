@@ -6,17 +6,7 @@ permalink: /about/
 
 # About Me
 
-<img
-  src="{{ '/images/profile.jpg' | relative_url }}"
-  alt="Isaac Ziebarth"
-  style="
-    width: 300px;        /* keep the image responsive */
-    height: auto;
-    float: right;
-    margin-left: 20px;
-    margin-bottom: 10px;
-    border-radius: 5px;"
-/>
+<img src="/images/profile.jpg" alt="Isaac Ziebarth" width="300px" style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;">
 
 ## Professional Profile
 
