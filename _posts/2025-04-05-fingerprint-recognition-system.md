@@ -1,8 +1,3 @@
-Below is a straightforward replacement for  
-`2025-04-05-fingerprint-recognition-system.md`.  
-*No hidden comments, no new academic references—just the essentials that show how Question 1 fulfils the blog-posting requirement in Question 2.*
-
-```markdown
 ---
 layout: post
 title: "Building a Web-Based Fingerprint Recognition System"
