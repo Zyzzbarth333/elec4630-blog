@@ -20,7 +20,7 @@ This project challenged me to classify images into five everyday categories: air
 
 One of the most exciting (and challenging!) parts of this project was creating my own dataset using web-scraped images. Most tutorials rely on carefully curated datasets like CIFAR-10 or ImageNet, but I wanted to see if I could build a robust classifier using only images found "in the wild."
 
-> 📝 **Note:** If you're interested in exploring the code in more depth, the full implementation details are available in my [Jupyter notebook (Q4-notebook.pdf)](/Zyzzbarth333.github.io/elec4630-blog/assets/Q4-notebook.pdf)!
+> 📝 **Note:** If you're interested in exploring the code in more depth, the full implementation details are available in my [Jupyter notebook (Q4-notebook.pdf)](/assets/Q4-notebook.pdf)!
 
 ### Web Scraping Strategy
 
