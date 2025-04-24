@@ -4,7 +4,16 @@ layout: home
 
 Welcome to my technical blog documenting my learning journey through ELEC4630 at the University of Queensland. This blog serves as a personal learning record and a resource for others exploring computer vision and deep learning.
 
-![Image of fast.ai logo](images/logo.png) <img src="/elec4630-blog/images/profile.jpg" alt="Isaac Ziebarth" width="300px" style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;">
+![Image of fast.ai logo](images/logo.png) <img src="/elec4630-blog/images/profile.jpg"
+     alt="Isaac Ziebarth"
+     style="float:right;
+            width:300px;          /* keep existing width */
+            height:220px;         /* make it a bit shorter */
+            object-fit:cover;     /* crops evenly if height < natural */
+            margin-left:20px;
+            margin-bottom:10px;
+            border-radius:5px;">
+
 
 ## About Me
 
