@@ -86,9 +86,8 @@ The project structure reflects a professional approach to software development, 
 
 The web interface provides four primary functions:
 
-![Enrollment Interface](/images/test1.jpg)
-
 ### 1. Fingerprint Enrollment
+![Enrollment Interface](/images/test1.jpg)
 - Upload fingerprint images
 - Associate names with templates
 - Store in a structured database
