@@ -4,7 +4,7 @@ layout: home
 
 Welcome to my technical blog documenting my learning journey through ELEC4630 at the University of Queensland. This blog serves as a personal learning record and a resource for others exploring computer vision and deep learning.
 
-![Image of fast.ai logo](images/logo.png)
+![Image of fast.ai logo](images/logo.png) <img src="/elec4630-blog/images/profile.jpg" alt="Isaac Ziebarth" width="300px" style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;">
 
 ## About Me
 
@@ -22,7 +22,7 @@ This blog documents my exploration of several key areas:
 ## Recent Learning Highlights
 
 - Successfully implemented a ROC curve analysis for biometric systems
-- Achieved a 25× speedup when migrating from CPU to GPU processing
+- Achieved a 9.97× speedup when migrating from CPU to GPU processing
 - Created a custom t-SNE visualisation to understand feature spaces
 - Scraped and processed web images for multi-class classification
 
