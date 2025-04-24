@@ -20,7 +20,7 @@ This project challenged me to classify images into five everyday categories: air
 
 One of the most exciting (and challenging!) parts of this project was creating my own dataset using web-scraped images. Most tutorials rely on carefully curated datasets like CIFAR-10 or ImageNet, but I wanted to see if I could build a robust classifier using only images found "in the wild."
 
-> 📝 **Note:** The full implementation details are available in my [Jupyter notebook (Q4-notebook.pdf)](https://github.com/zyzzbarth333/elec4630-blog/assets/Q4-notebook.pdf) if you're interested in exploring the code in more depth!
+> 📝 **Note:** The full implementation details are available in my [Jupyter notebook (Q4-notebook.pdf)](/elec4630-blog/assets/Q4-notebook.pdf) if you're interested in exploring the code in more depth!
 
 ### Web Scraping Strategy
 
@@ -280,4 +280,4 @@ This project demonstrated that modern deep learning tools and transfer learning 
 4. Van der Maaten, L., & Hinton, G. (2008). "Visualizing data using t-SNE." *Journal of Machine Learning Research*, 9(Nov), 2579-2605.
 5. Wattenberg, M., Viégas, F., & Johnson, I. (2016). "How to Use t-SNE Effectively." *Distill*. [https://distill.pub/2016/misread-tsne/](https://distill.pub/2016/misread-tsne/)
 6. ELEC4630 Assignment 2 (2025). "Question 4: Custom Image Classification." The University of Queensland.
-7. Ziebarth, I. (2025). "Multi-Class Image Classification with Web-Scraped Data." [Q4-notebook.pdf](https://github.com/zyzzbarth333/elec4630-blog/assets/Q4-notebook.pdf)
+7. Ziebarth, I. (2025). "Multi-Class Image Classification with Web-Scraped Data." [Q4-notebook.pdf](/elec4630-blog/assets/Q4-notebook.pdf)
