@@ -6,7 +6,7 @@ categories: [deep-learning, computer-vision]
 tags: [fastai, t-sne, classification, web-scraping, confusion-matrix]
 toc: true
 use_math: true
-image: /elec4630-blog/images/Q4/sample_batch.png
+image: /elec4630-blog/images/sample_batch.png
 description: "Building a multi-class image classifier from web-scraped data with comprehensive performance analysis using t-SNE visualisation and confusion matrices."
 ---
 
@@ -19,6 +19,8 @@ This project challenged me to classify images into five everyday categories: air
 ## The Data Challenge: Building a Dataset from Scratch
 
 One of the most exciting (and challenging!) parts of this project was creating my own dataset using web-scraped images. Most tutorials rely on carefully curated datasets like CIFAR-10 or ImageNet, but I wanted to see if I could build a robust classifier using only images found "in the wild."
+
+> 📝 **Note:** The full implementation details are available in my [Jupyter notebook (Q4-notebook.pdf)](https://github.com/zyzzbarth333/elec4630-blog/assets/Q4-notebook.pdf) if you're interested in exploring the code in more depth!
 
 ### Web Scraping Strategy
 
@@ -53,7 +55,7 @@ That's right—I collected over 2,600 images across the five categories! And che
 
 Here are some sample images I collected:
 
-![Sample Images](/elec4630-blog/images/Q4/sample_images.png)
+![Sample Images](/elec4630-blog/images/sample_images.png)
 
 The variety is impressive: different angles, lighting conditions, backgrounds, and art styles. This diversity would help the model generalise new images better.
 
@@ -80,7 +82,7 @@ These augmentations apply random transformations like:
 
 Here's a batch of augmented training images:
 
-![Sample Batch](/elec4630-blog/images/Q4/sample_batch.png)
+![Sample Batch](/elec4630-blog/images/sample_batch.png)
 
 Look at how diverse these images are! Each time the model sees an image during training, it's slightly different. This forces the model to focus on the important features that define each class rather than memorising specific images.
 
@@ -140,7 +142,7 @@ In just **93.74 seconds** of total training time, the model reached **90.79% acc
 
 One of my favourite parts of this project was analysing how the model makes decisions. A confusion matrix shows us which classes the model confuses with each other:
 
-![Confusion Matrix](/elec4630-blog/images/Q4/confusion_matrix.png)
+![Confusion Matrix](/elec4630-blog/images/confusion_matrix.png)
 
 Looking at this visualisation, I discovered some fascinating patterns:
 
@@ -191,7 +193,7 @@ tsne_features = tsne.fit_transform(features)
 
 The resulting visualisation reveals fascinating patterns in the feature space:
 
-![t-SNE Visualisation](/elec4630-blog/images/Q4/tsne_visualisation.png)
+![t-SNE Visualisation](/elec4630-blog/images/tsne_visualisation.png)
 
 ### Feature Space Insights:
 
@@ -228,7 +230,7 @@ This visualisation confirms that the model's learned feature space captures sema
 
 To qualitatively assess the model's performance, I tested it on clear, representative examples:
 
-![Sample Predictions](/elec4630-blog/images/Q4/sample_predictions.png)
+![Sample Predictions](/elec4630-blog/images/sample_predictions.png)
 
 **Results**:
 - **Perfect Classification**: 100% accuracy on these sample images
