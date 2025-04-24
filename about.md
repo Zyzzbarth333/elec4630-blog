@@ -6,7 +6,7 @@ permalink: /about/
 
 # About Me
 
-<img src="/images/profile.jpg" alt="Isaac Ziebarth" width="300px" style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;">
+<img src="/elec4630-blog/images/profile.jpg" alt="Isaac Ziebarth" width="300px" style="float: right; margin-left: 20px; margin-bottom: 10px; border-radius: 5px;">
 
 ## Professional Profile
 
