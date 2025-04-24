@@ -12,6 +12,8 @@ description: "A deep dive into GPU acceleration for deep learning, exploring bat
 
 # Accelerating Deep Learning: A Practical GPU Performance Analysis
 
+This week, I explored the performance difference between CPU and GPU for deep learning tasks. I'll take you through documents, my setup process, experiments with different batch sizes, and analysis of the results.
+
 ## Introduction
 
 Deep learning models, particularly Convolutional Neural Networks (CNNs), rely heavily on matrix computations that can benefit dramatically from parallel processing. In this post, I'll share my exploration of GPU acceleration during the ELEC4630 Computer Vision and Deep Learning course, focusing on understanding how hardware can dramatically improve training efficiency.
