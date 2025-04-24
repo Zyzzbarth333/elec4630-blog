@@ -6,11 +6,11 @@ categories: [computer-vision, biometrics, python]
 tags: [fingerprints, machine-learning, flask, opencv]
 toc: true
 comments: true
-image: /assets/images/Q1/test1.jpg
+image: ../images/test1.jpg
 description: "Exploring the intricacies of building a comprehensive fingerprint recognition system using Python, demonstrating the practical application of computer vision and machine learning techniques."
 ---
 
-# From Concept to Reality: Building a Comprehensive Fingerprint Recognition System
+# Building a Comprehensive Fingerprint Recognition System
 
 In this post, I'll share my journey of developing a sophisticated web-based fingerprint recognition system as part of my Computer Vision and Deep Learning course at the University of Queensland.
 
