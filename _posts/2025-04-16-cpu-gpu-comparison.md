@@ -119,7 +119,7 @@ Where:
    - Consider memory capacity
    - Balance computational efficiency with memory constraints
 
-## Containerization Approach
+## Containerisation Approach
 
 I used Docker containers with NVIDIA Container Toolkit to ensure:
 - Consistent environment
@@ -137,10 +137,14 @@ Planned extensions to this analysis:
 
 GPU acceleration offers transformative performance gains for deep learning, with batch size crucial in optimisation. Our 9.97× speedup demonstrates the practical importance of understanding hardware-software interactions.
 
+> 📝 **Note:** If you're interested in exploring the code in more depth, the full implementation details are available in my Notebooks: [GPU Notebook](/elec4630-blog/assets/Q3-GPU-notebook.pdf) and [CPU Notebook](/elec4630-blog/assets/Q3-CPU-notebook.pdf)!
+
 ## References
 
 1. Lovell, B. (2025). "BYOD Image for Deep Learning"
 2. Howard, J., & Gugger, S. (2020). *Deep Learning for Coders with fastai and PyTorch*
 3. Kandel, I., & Castelli, M. (2020). "The effect of batch size on the generalizability of convolutional neural networks"
+4. Ziebarth, I. (2025). "GPU Performance Testing - Batch Size Optimisation" [Q3-GPU-notebook.pdf](/elec4630-blog/assets/Q3-GPU-notebook.pdf)
+5. Ziebarth, I. (2025). "CPU Testing for Speedup Calculation" [Q3-CPU-notebook.pdf](/elec4630-blog/assets/Q3-CPU-notebook.pdf)
 
 *Curious about GPU acceleration? Let's discuss in the comments!*
