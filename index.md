@@ -8,7 +8,7 @@ Welcome to my technical blog documenting my learning journey through ELEC4630 at
      alt="Isaac Ziebarth"
      style="float:right;
             width:300px;          /* keep existing width */
-            height:220px;         /* make it a bit shorter */
+            height:300px;         /* make it a bit shorter */
             object-fit:cover;     /* crops evenly if height < natural */
             margin-left:20px;
             margin-bottom:10px;
