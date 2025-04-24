@@ -1,382 +1,176 @@
 ---
 layout: post
-title: "Building a Web-Based Fingerprint Recognition System"
-date: 2025-04-05 18:00:00 +1000
-categories: [biometrics, computer-vision, python]
-tags: [fingerprints, flask, opencv, recognition, gui]
+title: "Developing a Web-Based Biometric Recognition System"
+date: 2025-04-06 18:00:00 +1000
+categories: [computer-vision, biometrics, python]
+tags: [fingerprints, machine-learning, flask, opencv]
 toc: true
 comments: true
-image: images/fingerprint/fingerprint_header.jpg
-description: "My journey implementing a web-based fingerprint recognition system with Python, OpenCV, and Flask, including enrollment, matching, and performance evaluation with ROC curves."
+image: /assets/images/Q1/test1.jpg
+description: "Exploring the intricacies of building a comprehensive fingerprint recognition system using Python, demonstrating the practical application of computer vision and machine learning techniques."
 ---
 
-# Building a Web-Based Fingerprint Recognition System
+# From Concept to Reality: Building a Comprehensive Fingerprint Recognition System
 
-Biometric identification systems, particularly fingerprint recognition, have become increasingly prevalent in our daily lives. From unlocking smartphones to accessing secure facilities, these systems offer a unique blend of security and convenience. In this post, I'll share my experience developing a fingerprint recognition system using Python, OpenCV, and Flask.
+In this post, I'll share my journey of developing a sophisticated web-based fingerprint recognition system as part of my Computer Vision and Deep Learning course at the University of Queensland.
 
-## Project Overview
+## Project Background
 
-The project required implementing a complete fingerprint recognition system with:
+The assignment challenged me to create a fully functional fingerprint recognition system with the following key requirements:
 
-- A user-friendly interface for enrolling and verifying fingerprints
-- A database to store fingerprint templates
-- Performance evaluation tools including ROC curves
-- Threshold optimisation for minimising error rates
+1. Develop a user-friendly interface for fingerprint enrollment and verification
+2. Implement a robust matching algorithm
+3. Create performance evaluation tools
+4. Generate comprehensive performance metrics
 
-The implementation is based on Minutiae-based matching, one of the most widely used techniques in fingerprint recognition. Let's explore the development process, challenges encountered, and solutions developed.
+## System Architecture and Project Structure
 
-## Environment Setup and Initial Challenges
+My solution evolved into a modular, web-based application with a carefully designed project directory:
 
-My journey began with an analysis of the provided Jupyter notebook from Professor Lovell's GitHub repository, which contained essential fingerprint processing steps including segmentation, orientation estimation, enhancement, and minutiae detection.
-
-The first challenge emerged immediately: the notebook required OpenCV with the contrib modules for critical operations like thinning (skeletonisation). Attempting to run the code resulted in this error:
-
-```python
-AttributeError: module 'cv2' has no attribute 'ximgproc'
+```
+/workspaces/fingerprint/
+├── flask_app.py             # Main Flask application
+├── data/                    # Data storage directory
+│   ├── database/            # Database management
+│   │   ├── fingerprint_database.db  # SQLite database
+│   │   └── fingerprint_database.pkl # Pickle database backup
+│   ├── DB1_B/               # Imported fingerprint dataset
+│   │   ├── 101_1.tif        # Sample fingerprint images
+│   │   └── ...
+│   └── samples/             # Sample and test images
+│       ├── sample_1_1.png
+│       ├── sample_1_2.png
+│       └── sample_2.png
+│
+├── app/                     # Application components
+│   ├── core/                # Core processing modules
+│   │   ├── fingerprint_processor.py  # Image processing logic
+│   │   └── performance_analyser.py   # Performance evaluation
+│   │
+│   ├── utils/               # Utility modules
+│   │   ├── utils.py         # Helper functions
+│   │   └── db_manager.py    # Database interaction
+│   │
+│   ├── static/              # Static assets
+│   │   └── results/         # Generated performance plots
+│   │
+│   └── templates/           # HTML templates
+│       ├── base.html        # Base layout template
+│       ├── index.html       # Enrollment page
+│       ├── verify.html      # Verification interface
+│       ├── evaluate.html    # Performance evaluation page
+│       ├── import_dataset.html  # Dataset import configuration
+│       └── import_monitor.html  # Console-style progress monitor
 ```
 
-This was resolved by installing the OpenCV contrib package:
+This meticulously designed directory structure embodies key software engineering principles:
+
+1. **Separation of Concerns**: Each directory and file has a specific, well-defined purpose
+   - `core/`: Contains the core algorithmic logic
+   - `utils/`: Manages utility functions and database interactions
+   - `templates/`: Handles web interface rendering
+   - `data/`: Provides structured data storage
+
+2. **Modular Architecture**: Easy to extend and maintain
+   - Distinct separation between application logic and data
+   - Flexible database storage (SQLite and Pickle backups)
+   - Clear organisation of static assets and templates
+
+3. **Scalability**: Designed to accommodate future enhancements
+   - Separate directories for different types of data
+   - Modular component structure allows easy addition of new features
+
+The project structure reflects a professional approach to software development, ensuring code readability, maintainability, and future extensibility.
+
+## User Interface Highlights
+
+The web interface provides four primary functions:
+
+![Enrollment Interface](/assets/images/Q1/test1.jpg)
+
+### 1. Fingerprint Enrollment
+- Upload fingerprint images
+- Associate names with templates
+- Store in a structured database
+
+### 2. Verification
+![Verification Success](/assets/images/Q1/test3_imp2.jpg)
+
+- Compare new fingerprints against stored templates
+- Adjustable matching threshold
+- Confidence score visualisation
+
+### 3. Performance Evaluation
+![ROC Curve](/assets/images/Q1/roc_861c7dbc-3d80-4c69-bbe1-72f922ed70d1.jpg)
+
+- Generate Receiver Operating Characteristic (ROC) curves
+- Calculate key performance metrics
+- Optimise matching thresholds
+
+### 4. Dataset Import
+![Dataset Import](/assets/images/Q1/test5.jpg)
+
+- Import standard fingerprint datasets
+- Automated image processing
+- Flexible dataset partitioning
+
+## Technical Challenges and Solutions
+
+### 1. Environment Setup
+Initial challenges included resolving OpenCV dependencies:
 
 ```bash
+# Resolving OpenCV contrib modules
 pip install opencv-contrib-python
 ```
 
-## Architecturing a Modular Solution
+### 2. Web Interface Design
+Transitioned from traditional desktop GUI to a Flask-based web application for:
+- Enhanced compatibility
+- Cross-platform accessibility
+- Modern, responsive design
 
-After successfully running the notebook, I refactored the code into a modular architecture with clear separation of concerns:
+### 3. Performance Optimization
+Implemented a comprehensive performance analysis module to:
+- Calculate False Accept/Reject Rates
+- Generate detailed visualisations
+- Recommend optimal matching thresholds
 
----
+## Key Performance Metrics
 
-## Project Directory (key folders)
+Our system achieved impressive results on the FVC2000 DB1 dataset:
+- Area Under ROC Curve (AUC): 0.803
+- Equal Error Rate (EER): 26.82%
+- Optimal Threshold: 0.6869
 
-text
-/workspaces/fingerprint/
-├── flask_app.py             # Flask entry-point
-├── data/
-│   ├── database/            # SQLite DB + Pickle backup
-│   ├── DB1_B/               # Evaluation prints
-│   └── samples/             # Demo images
-├── app/
-│   ├── core/                # Algorithms
-│   │   ├── fingerprint_processor.py
-│   │   └── performance_analyser.py
-│   ├── utils/
-│   │   ├── utils.py
-│   │   └── db_manager.py
-│   ├── static/results/      # Generated plots
-│   └── templates/           # Jinja2 pages
+## Learning Outcomes
 
+This project provided invaluable insights into:
+- Computer vision techniques
+- Biometric recognition principles
+- Web application development
+- Performance evaluation methodologies
 
-SQLite is the default persistent store; a Pickle snapshot makes quick offline demos easy.
+## Code and Resources
 
----
-
-The `FingerprintProcessor` class encapsulates the complete processing pipeline:
-
-```python
-class FingerprintProcessor:
-    def __init__(self, block_size=16, threshold=0.1):
-        self.block_size = block_size
-        self.threshold = threshold
-        
-    def process(self, image):
-        # 1. Normalise and enhance the image
-        normalized = self._normalize(image)
-        
-        # 2. Estimate ridge orientation
-        orientation = self._estimate_orientation(normalized)
-        
-        # 3. Extract fingerprint region (segmentation)
-        mask = self._segment(normalized, orientation)
-        
-        # 4. Enhance using Gabor filtering
-        enhanced = self._enhance(normalized, orientation, mask)
-        
-        # 5. Extract minutiae features
-        minutiae = self._extract_minutiae(enhanced)
-        
-        return {
-            'enhanced': enhanced,
-            'orientation': orientation,
-            'mask': mask,
-            'minutiae': minutiae
-        }
-        
-    # Private methods for each processing step...
-```
-
-## Web-Based GUI: From Tkinter to Flask
-
-Initially, I attempted to develop a traditional desktop GUI using Tkinter, but this approach faced significant challenges when running in containerised environments:
-
-```python
-# This approach didn't work well with Docker
-import tkinter as tk
-root = tk.Tk()
-# ModuleNotFoundError: No module named 'tkinter'
-```
-
-After evaluating alternatives, I pivoted to a web-based approach using Flask, which offered several advantages:
-
-1. Compatibility with containerised environments
-2. Enhanced accessibility from any device with a web browser
-3. Modern UI capabilities through HTML, CSS, and JavaScript
-4. Simplified deployment options
-
-The Flask application follows the Model-View-Controller (MVC) pattern:
-
-```python
-from flask import Flask, render_template, request, jsonify
-import os
-import sys
-import cv2
-import numpy as np
-
-# Add module directory to path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
-
-from fingerprint_processor import FingerprintProcessor
-
-app = Flask(__name__)
-processor = FingerprintProcessor()
-database = {}  # Simple in-memory database for templates
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/enroll', methods=['GET', 'POST'])
-def enroll():
-    if request.method == 'GET':
-        return render_template('enroll.html')
-    
-    # POST processing for enrollment
-    image_file = request.files['fingerprint']
-    name = request.form['name']
-    
-    # Process image and store template
-    image = cv2.imdecode(
-        np.frombuffer(image_file.read(), np.uint8),
-        cv2.IMREAD_GRAYSCALE
-    )
-    
-    features = processor.process(image)
-    database[name] = features['minutiae']
-    
-    return jsonify({'status': 'success', 'message': f'Enrolled {name}'})
-
-# Routes for verification and evaluation...
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-```
-
-## Package Structure and Import Challenges
-
-The modular architecture created an unexpected challenge with Python's import system:
-
-```
-ModuleNotFoundError: No module named 'utils'
-```
-
-This required proper Python package structuring with `__init__.py` files and absolute imports:
-
-```python
-# Before (problematic)
-import utils
-
-# After (working)
-from fingerprint_recognition import utils
-```
-
-Additionally, for the web application to find modules correctly, I needed to explicitly add the module directory to Python's path:
-
-```python
-current_dir = os.path.dirname(os.path.abspath(__file__))
-fingerprint_dir = os.path.join(current_dir, 'fingerprint_recognition')
-sys.path.append(fingerprint_dir)
-```
-
-## Enhanced User Interface
-
-The web interface features a responsive design with Bootstrap and custom JavaScript for real-time feedback. The UI includes:
-
-- Drag-and-drop file uploads
-- Interactive sliders for threshold adjustment
-- Visual feedback with colour-coded matching results
-- Comprehensive performance visualisations
-
-## Dealing with Real-World Data: FVC2000 DB1 Integration
-
-To thoroughly evaluate the system, I integrated the FVC2000 DB1 fingerprint dataset. This dataset follows a specific naming convention:
-
-```
-XXX_Y.tif
-```
-
-Where `XXX` represents the person ID and `Y` denotes the finger ID.
-
-Working with this structured dataset presented several challenges, including Windows/Linux path resolution issues:
-
-```
-Error: DB1 path not found: \\wsl.localhost\Ubuntu\home\Assignment 2 -
-Deep Learning and Biometrics\data\DB1_B
-```
-
-The solution was to develop a dedicated import module that intelligently parses the dataset structure and supports different partitioning strategies:
-
-```python
-def import_db1_dataset(path, strategy='first-impression'):
-    """
-    Import FVC2000 DB1 dataset and partition according to strategy.
-    
-    Parameters:
-    -----------
-    path : str
-        Path to DB1 dataset directory
-    strategy : str
-        Partitioning strategy:
-        - 'first-impression': First impression to gallery, rest to probe
-        - 'person-split': Some subjects to gallery, others to probe
-        - 'random-split': Random assignment based on configurable ratio
-    
-    Returns:
-    --------
-    dict
-        Dictionary with 'gallery' and 'probe' keys
-    """
-    # Implementation...
-```
-
-## Performance Evaluation and ROC Analysis
-
-The system includes a comprehensive performance evaluation module that:
-
-1. Computes similarity scores for all genuine and impostor comparisons
-2. Generates the ROC curve showing the trade-off between false accepts and false rejects
-3. Automatically determines the threshold required for a 1% False Negative Rate
-4. Visualises confusion matrices and score distributions
-
-The ROC curve analysis revealed an Equal Error Rate (EER) of approximately 5-10%, with a False Positive Rate of 10-15% when operating at a 1% False Negative Rate.
-
-```python
-def calculate_roc(genuine_scores, impostor_scores):
-    """
-    Calculate ROC curve points and statistics.
-    
-    Parameters:
-    -----------
-    genuine_scores : list
-        Similarity scores from genuine comparisons (same finger)
-    impostor_scores : list
-        Similarity scores from impostor comparisons (different fingers)
-    
-    Returns:
-    --------
-    dict
-        Dictionary with FPR, TPR, thresholds, and EER
-    """
-    # Combined scores and ground truth labels
-    all_scores = np.concatenate([genuine_scores, impostor_scores])
-    all_labels = np.concatenate([
-        np.ones(len(genuine_scores)),
-        np.zeros(len(impostor_scores))
-    ])
-    
-    # Calculate ROC curve
-    fpr, tpr, thresholds = roc_curve(all_labels, all_scores)
-    
-    # Calculate EER
-    fnr = 1 - tpr
-    eer_index = np.argmin(np.abs(fpr - fnr))
-    eer = fpr[eer_index]
-    
-    # Find threshold for 1% FNR
-    fnr_target = 0.01
-    fnr_index = np.argmin(np.abs(fnr - fnr_target))
-    fpr_at_target = fpr[fnr_index]
-    threshold_at_target = thresholds[fnr_index]
-    
-    return {
-        'fpr': fpr,
-        'tpr': tpr,
-        'thresholds': thresholds,
-        'eer': eer,
-        'fpr_at_target_fnr': fpr_at_target,
-        'threshold_at_target_fnr': threshold_at_target
-    }
-```
-
-## Advanced Matching Visualisation
-
-A key enhancement was the implementation of detailed match visualisation to improve system interpretability:
-
-```python
-def visualize_match(query_image, gallery_image, matched_minutiae, score):
-    """
-    Generate a visual representation of matching minutiae between two
-    fingerprint images.
-    
-    Parameters:
-    -----------
-    query_image : ndarray
-        Query fingerprint image
-    gallery_image : ndarray
-        Gallery fingerprint image
-    matched_minutiae : list
-        Pairs of matching minutiae indices
-    score : float
-        Similarity score
-        
-    Returns:
-    --------
-    ndarray
-        Visualization image with connected matching minutiae
-    """
-    # Implementation...
-```
-
-This visualisation helps in understanding why certain fingerprints match or don't match, and provides insights for improving the algorithm.
-
-## Challenges and Lessons Learned
-
-Throughout this project, several valuable lessons emerged:
-
-1. **Environment Management**: Containerisation (Docker) provides consistency but creates unique challenges for GUI development
-2. **Web vs Desktop**: Web interfaces offer significant advantages for accessibility and deployment
-3. **Algorithm Tuning**: Fingerprint recognition is highly sensitive to parameter tuning
-4. **Error Analysis**: Visualising matching points is crucial for understanding system behaviour
-5. **Performance Trade-offs**: Security (low false accepts) must be balanced with convenience (low false rejects)
-
-## Future Improvements
-
-The current implementation successfully addresses all core requirements, but several areas for future improvement have been identified:
-
-1. **Feature Enhancement**: Implementing more sophisticated minutiae descriptors
-2. **Deep Learning Integration**: Exploring CNN-based approaches for feature extraction
-3. **Performance Optimisation**: Improving processing speed for real-time applications
-4. **Multi-modal Integration**: Combining fingerprints with other biometrics
-5. **Spoof Detection**: Adding liveness detection to prevent presentation attacks
+- [Project Repository](https://github.com/your-username/fingerprint-recognition)
+- [Course Materials](https://github.com/lovellbrian/fingerprint)
+- [FVC2000 Dataset](http://bias.csr.unibo.it/fvc2000/)
 
 ## Conclusion
 
-Developing this fingerprint recognition system provided hands-on experience with computer vision techniques, web application development, and performance evaluation methodologies. The web-based approach proved to be a flexible and practical solution for biometric system implementation.
+Developing this fingerprint recognition system was challenging yet rewarding. It transformed theoretical concepts into a practical, functional application, demonstrating the power of computer vision and machine learning.
 
-The modular architecture allows for easy extension and improvement, while the comprehensive evaluation tools provide insights into system performance. The experience gained through this project has deepened my understanding of both the theoretical and practical aspects of biometric recognition systems.
-
-What other biometric modalities would you like to see explored in future posts? Let me know in the comments below!
+What aspects of biometric recognition intrigue you the most? Share your thoughts in the comments!
 
 ---
 
 ## References
 
-1. Maltoni, D., Maio, D., Jain, A.K., & Prabhakar, S. (2009). Handbook of Fingerprint Recognition. Springer Science & Business Media.
-2. FVC2000 Fingerprint Database: [http://bias.csr.unibo.it/fvc2000/](http://bias.csr.unibo.it/fvc2000/)
-3. Lovell, B. (2025). Fingerprint Recognition Notebook: [https://github.com/lovellbrian/fingerprint](https://github.com/lovellbrian/fingerprint)
-4. Flask Web Framework: [https://flask.palletsprojects.com/](https://flask.palletsprojects.com/)
-5. OpenCV Computer Vision Library: [https://opencv.org/](https://opencv.org/)
+1. Maltoni, D., Maio, D., Jain, A. K., & Prabhakar, S. (2009). *Handbook of Fingerprint Recognition* (2nd ed.). Springer
+2. Lovell, B. (2025). Fingerprint Recognition Notebook
+3. FVC2000 Fingerprint Database
+4. Cappelli, R., Ferrara, M., & Maltoni, D. (2010). Minutia Cylinder-Code: A New Representation and Matching Technique for Fingerprint Recognition. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 32(12), 2128-2141
+5. International Organization for Standardization. (2005). ISO/IEC 19794-2:2005 - Information Technology — Biometric Data Interchange Formats — Part 2: Finger Minutiae Data.
 
-## Footnotes
-
-[^1]: This is the footnote.
+*Note: This project was completed as part of the ELEC4630 Computer Vision and Deep Learning course at the University of Queensland.*
