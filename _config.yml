@@ -24,6 +24,8 @@ use_math: true
 # Add your Google Analytics ID here if you have one and want to use it
 google_analytics:
 
+image: /images/test1.jpg
+
 # Theme settings
 theme: minima
 plugins:
