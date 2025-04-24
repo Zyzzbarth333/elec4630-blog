@@ -6,7 +6,7 @@ categories: [computer-vision, biometrics, python]
 tags: [fingerprints, machine-learning, flask, opencv]
 toc: true
 comments: true
-image: ../images/test1.jpg
+image: /images/test1.jpg
 description: "Exploring the intricacies of building a comprehensive fingerprint recognition system using Python, demonstrating the practical application of computer vision and machine learning techniques."
 ---
 
@@ -87,27 +87,27 @@ The project structure reflects a professional approach to software development, 
 The web interface provides four primary functions:
 
 ### 1. Fingerprint Enrollment
-![Enrollment Interface](../images/test1.jpg)
+![Enrollment Interface](/images/test1.jpg)
 - Upload fingerprint images
 - Associate names with templates
 - Store in a structured database
 
 ### 2. Verification
-![Verification Success](../images/test3_imp2.jpg)
+![Verification Success](/images/test3_imp2.jpg)
 
 - Compare new fingerprints against stored templates
 - Adjustable matching threshold
 - Confidence score visualisation
 
 ### 3. Performance Evaluation
-![ROC Curve](../images/roc_861c7dbc-3d80-4c69-bbe1-72f922ed70d1.jpg)
+![ROC Curve](/images/roc_861c7dbc-3d80-4c69-bbe1-72f922ed70d1.jpg)
 
 - Generate Receiver Operating Characteristic (ROC) curves
 - Calculate key performance metrics
 - Optimise matching thresholds
 
 ### 4. Dataset Import
-![Dataset Import](../images/test5.jpg)
+![Dataset Import](/images/test5.jpg)
 
 - Import standard fingerprint datasets
 - Automated image processing
