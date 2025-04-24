@@ -6,7 +6,7 @@ categories: [deep-learning, hardware, performance]
 tags: [gpu, cpu, container, docker, performance-analysis]
 toc: true
 use_math: true
-image: ../images/Q3/GPU-batch-test.jpg
+image: /elec4630-blog/images/Q3/GPU-batch-test.jpg
 description: "A deep dive into GPU acceleration for deep learning, exploring batch size optimisation and performance characteristics using NVIDIA RTX 3060 Ti."
 ---
 
@@ -46,7 +46,7 @@ I designed a systematic experiment to test how batch size impacts GPU training p
 
 ### Performance Visualisation
 
-![Batch Size Performance](/images/Q3/batch_size_performance.png)
+![Batch Size Performance](/elec4630-blog/images/batch_size_performance.png)
 
 ## Key Insights
 
@@ -73,7 +73,7 @@ The results reveal a classic U-shaped performance curve:
 
 Monitoring with `nvtop` revealed fascinating insights:
 
-![GPU Monitoring](/images/Q3/GPU-batch-test.jpg)
+![GPU Monitoring](/elec4630-blog/images/GPU-batch-test.jpg)
 
 - Blue line: GPU computational utilisation (0-100%)
 - Yellow line: Memory usage
